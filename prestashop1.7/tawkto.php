@@ -2,17 +2,6 @@
 /**
  * Class Tawkto
  *
- * @category  Prestashop
- * @category  Module
- * @author    tawk.to <support(at)tawk.to>
- * @copyright Mediacom87
- * @license   opensource license see comment below
- */
-
-
-/**
- * tawk.to
- *
  * NOTICE OF LICENSE
  *
  * This source file is subject to the Open Software License (OSL 3.0)
@@ -23,8 +12,11 @@
  * obtain it through the world-wide-web, please send an email
  * to support@tawk.to so we can send you a copy immediately.
  *
- * @copyright   Copyright (c) 2014 tawk.to
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author    tawk.to <support(at)tawk.to>
+ * @copyright Copyright (c) 2014-2021 tawk.to
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @category  Prestashop
+ * @category  Module
  */
 
 if (!defined('_PS_VERSION_')) {
@@ -42,7 +34,7 @@ class Tawkto extends Module
     {
         $this->name = 'tawkto';
         $this->tab = 'front_office_features';
-        $this->version = '1.1';
+        $this->version = '1.7.1';
         $this->author = 'tawk.to';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array('min' => '1.5', 'max' => '1.7');
@@ -61,8 +53,7 @@ class Tawkto extends Module
 
     public function install()
     {
-        // return parent::install() && $this->registerHook('displayBeforeBodyClosingTag') && $this->installTab();
-        return parent::install() && $this->registerHook('footer') && $this->installTab();
+        return parent::install() && $this->registerHook('displayFooter') && $this->installTab();
     }
 
     private function installTab()
@@ -88,11 +79,11 @@ class Tawkto extends Module
         if (is_null($shopId)) {
             $shopId = 1;
         }
-        
+
         $pageId = Configuration::get(self::TAWKTO_WIDGET_PAGE_ID."_{$shopId}");
         $widgetId = Configuration::get(self::TAWKTO_WIDGET_WIDGET_ID."_{$shopId}");
-        
-        if(empty($pageId) || empty($widgetId)) {
+
+        if (empty($pageId) || empty($widgetId)) {
             return '';
         }
 
@@ -100,7 +91,7 @@ class Tawkto extends Module
         $sql = new DbQuery();
         $sql->select('*');
         $sql->from('configuration');
-        $sql->where('name = "'.self::TAWKTO_WIDGET_OPTS."_{$shopId}".'"');
+        $sql->where('name = "'.pSQL(self::TAWKTO_WIDGET_OPTS."_{$shopId}").'"');
         $result =  Db::getInstance()->executeS($sql);
         if ($result) {
             $result = current($result);
@@ -109,12 +100,10 @@ class Tawkto extends Module
 
             // prepare visibility
             if (false==$options->always_display) {
-
                 // show on specified urls
                 $showPages = json_decode($options->show_oncustom);
                 $show = false;
                 foreach ($showPages as $slug) {
-
                     if (!empty($slug)) {
                         $slug = str_ireplace(array('http://','https://'), '', $slug);
                         if (stripos($current_page, $slug)!==false) {
@@ -136,7 +125,7 @@ class Tawkto extends Module
                             return;
                         }
                     }
-                    
+
                     if ('index' == $this->context->controller->php_self) {
                         if (false==$options->show_onfrontpage) {
                             return;
@@ -148,17 +137,14 @@ class Tawkto extends Module
                     return;
                 }
             } else {
-
                 // hide on specified urls
                 $hide_pages = json_decode($options->hide_oncustom);
                 $show = true;
-                
+
                 foreach ($hide_pages as $slug) {
-                    
                     // we need to add htmlspecialchars due to slashes added when saving to database
                     $slug = (string) htmlspecialchars($slug);
                     if (!empty($slug)) {
-
                         $slug = str_ireplace(array('http://','https://'), '', $slug);
                         if (stripos($current_page, $slug)!==false) {
                             $show = false;
@@ -173,23 +159,33 @@ class Tawkto extends Module
             }
         }
 
-        // add customer details as visitor info
-        $customer_name = null;
-        $customer_email = null;
-        if (!is_null($this->context->customer->id)) {
-            $customer = $this->context->customer;
-            $customer_name = $customer->firstname.' '.$customer->lastname;
-            $customer_email = $customer->email;
-        }
-
         $this->context->smarty->assign(array(
                 'widget_id' => $widgetId,
                 'page_id'   => $pageId,
-                'customer_name'   => (!is_null($customer_name))?$customer_name:'',
-                'customer_email'   => (!is_null($customer_email))?$customer_email:'',
+                'visitor'   => $this->getVisitor()
             ));
 
         return $this->display(__FILE__, 'widget.tpl');
+    }
+
+    public function getVisitor()
+    {
+        // add customer details as visitor info
+        $name = null;
+        $email = null;
+        if (!is_null($this->context->customer->id)) {
+            $customer = $this->context->customer;
+            $name = $customer->firstname.' '.$customer->lastname;
+            $email = $customer->email;
+
+            $data = array(
+                    'name' => (!is_null($name))?$name:null,
+                    'email' => (!is_null($email))?$email:null
+                );
+            return json_encode($data);
+        }
+
+        return null;
     }
 
     public function uninstall()
@@ -197,8 +193,8 @@ class Tawkto extends Module
         $shopIds = array(1);
         $shops = Shop::getShops();
         if ($shops && !empty($shops)) {
-            foreach ($shops as $key => $shop) {
-                $shopIds[] = intval($shop['id_shop']);
+            foreach ($shops as $shop) {
+                $shopIds[] = (int)$shop['id_shop'];
             }
             reset($shops);
         }
@@ -212,7 +208,8 @@ class Tawkto extends Module
         return parent::uninstall() && $this->uninstallTab();
     }
 
-    public function uninstallTab() {
+    public function uninstallTab()
+    {
         $id_tab = (int)Tab::getIdFromClassName('AdminTawkto');
 
         if ($id_tab) {

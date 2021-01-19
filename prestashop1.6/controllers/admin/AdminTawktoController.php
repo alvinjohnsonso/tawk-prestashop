@@ -14,6 +14,8 @@
  * @author    tawk.to <support(at)tawk.to>
  * @copyright Copyright (c) 2014-2021 tawk.to
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @category  Prestashop
+ * @category  Module
  */
 
 if (!defined('_PS_VERSION_')) {
@@ -220,14 +222,17 @@ class AdminTawktoController extends ModuleAdminController
                 'show_oncategory' => false,
                 'show_onproduct' => false,
                 'show_oncustom' => array(),
+                'hide_oncustom' => array()
             );
 
         if (isset($_REQUEST['options']) && !empty($_REQUEST['options'])) {
             $options = explode('&', $_REQUEST['options']);
             foreach ($options as $post) {
                 list($column, $value) = explode('=', $post);
+                $column = str_ireplace('amp;', '', $column);
                 switch ($column) {
                     case 'show_oncustom':
+                    case 'hide_oncustom':
                         // replace newlines and returns with comma, and convert to array for saving
                         $value = urldecode($value);
                         $value = str_ireplace(array("\r\n", "\r", "\n"), ',', $value);
