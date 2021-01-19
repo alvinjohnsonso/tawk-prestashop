@@ -1,5 +1,4 @@
-<!--
-/**
+{*
  * Tawk.to
  *
  * NOTICE OF LICENSE
@@ -14,8 +13,8 @@
  *
  * @copyright   Copyright (c) 2014 Tawk.to
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
--->
+ *}
+
 {include file="toolbar.tpl" toolbar_btn=$toolbar_btn toolbar_scroll=$toolbar_scroll title=$title}
 
 {if !$same_user}
@@ -27,14 +26,14 @@
     src=""
     style="min-height: 275px; width: 100%; border: none; margin: 5px 0; padding: 10px; background: #FFF;">
 </iframe>
-<input type="hidden" class="hidden" name="page_id" value="{$page_id}">
-<input type="hidden" class="hidden" name="widget_id" value="{$widget_id}">
+<input type="hidden" class="hidden" name="page_id" value="{$page_id|escape:'htmlall':'UTF-8'}">
+<input type="hidden" class="hidden" name="widget_id" value="{$widget_id|escape:'htmlall':'UTF-8'}">
 <script type="text/javascript">
-var domain = '{$domain}';
+var domain = '{$domain|escape:'htmlall':'UTF-8'}';
     var currentHost = window.location.protocol + "//" + domain,
         url = "{$iframe_url}&parentDomain=" + currentHost,
         baseUrl = '{$base_url}',
-        current_id_tab = '{$tab_id}',
+        current_id_tab = '{$tab_id|escape:'htmlall':'UTF-8'}',
         controller = '{$controller}';
 
     {literal}
@@ -124,10 +123,10 @@ var domain = '{$domain}';
 <form id="module_form" action="" method="post">
     <div class="panel" id="fieldset_1">
         <div class="panel-heading"> <i class="icon-cogs"></i> Visibility Settings </div>
-        <div class="form-wrapper row">            
+        <div class="form-wrapper row">
             <div class="form-group row">
                 <label class="control-label col-lg-3">
-                    <span data-toggle="tooltip" data-html="true" 
+                    <span data-toggle="tooltip" data-html="true"
                         title=""  data-original-title="Select which pages that chat is displayed in the site(s)">
                         Always show Tawk.To widget on every page
                     </span>
@@ -135,8 +134,8 @@ var domain = '{$domain}';
                 <div class="col-lg-9">
                     <div class="radio ">
                         <label>
-                            <input type="checkbox" name="always_display" 
-                                id="always_display" value="1" 
+                            <input type="checkbox" name="always_display"
+                                id="always_display" value="1"
                                 {(is_null($display_opts)||$display_opts->always_display)?'checked':''} />
                         </label>
                     </div>
@@ -145,7 +144,7 @@ var domain = '{$domain}';
 
             <div class="form-group row">
                 <label class="control-label col-lg-3">
-                    <span data-toggle="tooltip" data-html="true" 
+                    <span data-toggle="tooltip" data-html="true"
                         title="" >
                         Show on frontpage
                     </span>
@@ -153,8 +152,8 @@ var domain = '{$domain}';
                 <div class="col-lg-9">
                     <div class="radio ">
                         <label>
-                            <input type="checkbox" name="show_onfrontpage" 
-                                id="show_onfrontpage" value="1" 
+                            <input type="checkbox" name="show_onfrontpage"
+                                id="show_onfrontpage" value="1"
                                 {(!is_null($display_opts) && $display_opts->show_onfrontpage)?'checked':''} />
                         </label>
                     </div>
@@ -163,7 +162,7 @@ var domain = '{$domain}';
 
             <div class="form-group row">
                 <label class="control-label col-lg-3">
-                    <span data-toggle="tooltip" data-html="true" 
+                    <span data-toggle="tooltip" data-html="true"
                         title="" >
                         Show on category pages
                     </span>
@@ -171,8 +170,8 @@ var domain = '{$domain}';
                 <div class="col-lg-9">
                     <div class="radio ">
                         <label>
-                            <input type="checkbox" name="show_oncategory" 
-                                id="show_oncategory" value="1" 
+                            <input type="checkbox" name="show_oncategory"
+                                id="show_oncategory" value="1"
                                 {(!is_null($display_opts) && $display_opts->show_oncategory)?'checked':''} />
                         </label>
                     </div>
@@ -181,7 +180,7 @@ var domain = '{$domain}';
 
             <div class="form-group row">
                 <label class="control-label col-lg-3">
-                    <span data-toggle="tooltip" data-html="true" 
+                    <span data-toggle="tooltip" data-html="true"
                         title="" >
                         Show on product pages
                     </span>
@@ -189,8 +188,8 @@ var domain = '{$domain}';
                 <div class="col-lg-9">
                     <div class="radio ">
                         <label>
-                            <input type="checkbox" name="show_onproduct" 
-                                id="show_onproduct" value="1" 
+                            <input type="checkbox" name="show_onproduct"
+                                id="show_onproduct" value="1"
                                 {(!is_null($display_opts) && $display_opts->show_onproduct)?'checked':''} />
                         </label>
                     </div>
@@ -199,7 +198,7 @@ var domain = '{$domain}';
 
             <div class="form-group row">
                 <label class="control-label col-lg-3">
-                    <span data-toggle="tooltip" data-html="true" 
+                    <span data-toggle="tooltip" data-html="true"
                         title="" >
                         Show on pages:
                     </span>
@@ -209,8 +208,8 @@ var domain = '{$domain}';
                         <label>
                         {if (!is_null($display_opts) && !empty($display_opts->show_oncustom)) }
                         {$whitelist = json_decode($display_opts->show_oncustom)}
-                        <textarea name="show_oncustom" id="show_oncustom" cols="30" 
-                            rows="10">{foreach from=$whitelist item=page}{$page}{"\r\n"}{/foreach}</textarea>
+                        <textarea name="show_oncustom" id="show_oncustom" cols="30"
+                            rows="10">{foreach from=$whitelist item=page}{$page|escape:'htmlall':'UTF-8'}{"\r\n"}{/foreach}</textarea>
                         {else}
                             <textarea name="show_oncustom" id="show_oncustom" cols="30" rows="10"></textarea>
                         {/if}
