@@ -18,9 +18,11 @@
 <!--Start of tawk.to Script-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-
-{if ($visitor) }
-    Tawk_API.visitor = {$visitor|escape:'htmlall':'UTF-8'};
+{if (isset($visitor)) }
+    Tawk_API.visitor = {
+        name : '{$visitor.name}',
+        email : '{$visitor.email}'
+    };
 {/if}
 
 (function(){

@@ -153,7 +153,7 @@ class Tawkto extends Module
                     'name' => (!is_null($name))?$name:null,
                     'email' => (!is_null($email))?$email:null
                 );
-            return json_encode($data);
+            return $data;
         }
 
         return null;

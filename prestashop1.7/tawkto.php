@@ -179,10 +179,11 @@ class Tawkto extends Module
             $email = $customer->email;
 
             $data = array(
-                    'name' => (!is_null($name))?$name:null,
-                    'email' => (!is_null($email))?$email:null
-                );
-            return json_encode($data);
+                'name' => (!is_null($name))?$name:null,
+                'email' => (!is_null($email))?$email:null
+            );
+
+            return $data;
         }
 
         return null;

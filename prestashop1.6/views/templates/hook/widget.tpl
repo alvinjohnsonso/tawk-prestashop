@@ -1,4 +1,3 @@
-<?php
 {*
  * tawk.to
  *
@@ -12,13 +11,20 @@
  * obtain it through the world-wide-web, please send an email
  * to support@tawk.to so we can send you a copy immediately.
  *
- * @copyright   Copyright (c) 2014 tawk.to
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author    tawk.to <support(at)tawk.to>
+ * @copyright Copyright (c) 2014-2021 tawk.to
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *}
-
-?><!--Start of tawk.to Script-->
+<!--Start of tawk.to Script-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+{if (isset($visitor)) }
+    Tawk_API.visitor = {
+        name : '{$visitor.name}',
+        email : '{$visitor.email}'
+    };
+{/if}
+
 (function(){
 var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
 s1.async=true;
@@ -27,8 +33,5 @@ s1.charset='UTF-8';
 s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
-{if ($visitor) }
-    Tawk_API.visitor = {$visitor|escape:'htmlall':'UTF-8'};
-{/if}
 </script>
 <!--End of tawk.to Script-->
