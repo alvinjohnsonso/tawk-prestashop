@@ -56,84 +56,79 @@
                     <tr valign="top">
                         <th class="tawksetting" scope="row">Always show tawk.to widget on every page</th>
                         <td>
-                        <label class="switch">
-                        <input type="checkbox" class="slider round" id="always_display" name="always_display" value="1" {(is_null($display_opts)||$display_opts->always_display)?'checked':''} />
-                        <div class="slider round"></div>
-                        </label>
+                            <label class="switch">
+                                <input type="checkbox" class="slider round" id="always_display" name="always_display" value="1" {(is_null($display_opts)||$display_opts->always_display)?'checked':''} />
+                                <div class="slider round"></div>
+                            </label>
                         </td>
                     </tr>
                     <tr valign="top" class="twk_selected_display">
                         <th class="tawksetting" scope="row">Show on front page</th>
                         <td>
-                        <label class="switch">
-                        <input type="checkbox" class="slider round" id="show_onfrontpage" name="show_onfrontpage" value="1" {(!is_null($display_opts) && $display_opts->show_onfrontpage)?'checked':''} />
-                        <div class="slider round"></div>
-                        </label>
+                            <label class="switch">
+                                <input type="checkbox" class="slider round" id="show_onfrontpage" name="show_onfrontpage" value="1" {(!is_null($display_opts) && $display_opts->show_onfrontpage)?'checked':''} />
+                                <div class="slider round"></div>
+                            </label>
                         </td>
                     </tr>
                     <tr valign="top" class="twk_selected_display">
                         <th class="tawksetting" scope="row">Show on Category pages</th>
                         <td>
-                        <label class="switch">
-                        <input type="checkbox" class="slider round" id="show_oncategory" name="show_oncategory" value="1" {(!is_null($display_opts) && $display_opts->show_oncategory)?'checked':''} />
-                        <div class="slider round"></div>
-                        </label>
+                            <label class="switch">
+                                <input type="checkbox" class="slider round" id="show_oncategory" name="show_oncategory" value="1" {(!is_null($display_opts) && $display_opts->show_oncategory)?'checked':''} />
+                                <div class="slider round"></div>
+                            </label>
                         </td>
                     </tr>
 
                     <tr valign="top"  class="twk_selected_display">
                         <th class="tawksetting" scope="row">Show on product pages</th>
                         <td>
-                        <label class="switch">
-                        <input type="checkbox" class="slider round" id="show_onarticlepages" name="show_onproduct" value="1" {(!is_null($display_opts) && $display_opts->show_onproduct)?'checked':''} />
-                        <div class="slider round"></div>
-                        </label>
+                            <label class="switch">
+                                <input type="checkbox" class="slider round" id="show_onarticlepages" name="show_onproduct" value="1" {(!is_null($display_opts) && $display_opts->show_onproduct)?'checked':''} />
+                                <div class="slider round"></div>
+                            </label>
                         </td>
                     </tr>
                     <tr valign="top" class="always_display_fields">
                         <th class="tawksetting" scope="row">Exclude on specific url</th>
                         <td>
-                        <label class="switch">
-                        <input type="checkbox" class="slider round" id="exclude_url" name="exclude_url" value="1"
-                        {(!is_null($display_opts) && !empty($display_opts->hide_oncustom))?'checked':''} />
-                        <div class="slider round"></div>
-                        </label>
-                        <div id="exlucded_urls_container" style="display:none;">
-                        {if (!is_null($display_opts) && !empty($display_opts->hide_oncustom)) }
-                        {$whitelist = json_decode($display_opts->hide_oncustom)}
-                        <textarea name="hide_oncustom" id="hide_oncustom" cols="30"
-                            rows="10">{foreach from=$whitelist item=page}{$page}{"\r\n"}{/foreach}</textarea>
-                        {else}
-                        <textarea class="hide_specific" name="hide_oncustom" id="hide_oncustom" cols="30" rows="10"></textarea>
-                        {/if}
-                        <BR>
-                        Enter the url where you <b>DO NOT</b> want the widget to display.
-                        <BR>
-                        Separate entries with comma (,).<BR>
-                        </div>
+                            <label class="switch">
+                                <input type="checkbox" class="slider round" id="exclude_url" name="exclude_url" value="1"
+                                {(!is_null($display_opts) && !empty($display_opts->hide_oncustom))?'checked':''} />
+                                <div class="slider round"></div>
+                            </label>
+                            <div id="exlucded_urls_container" style="display:none;">
+                                {if (!is_null($display_opts) && !empty($display_opts->hide_oncustom)) }
+                                {$whitelist = json_decode($display_opts->hide_oncustom)}
+                                <textarea name="hide_oncustom" id="hide_oncustom" cols="30"
+                                    rows="10">{foreach from=$whitelist item=page}{$page}{"\r\n"}{/foreach}</textarea>
+                                {else}
+                                <textarea class="hide_specific" name="hide_oncustom" id="hide_oncustom" cols="30" rows="10"></textarea>
+                                {/if}
+                                <p>Enter the url where you <b>DO NOT</b> want the widget to display.</p>
+                            </div>
                         </td>
                     </tr>
                     <tr valign="top"  class="twk_selected_display">
                         <th class="tawksetting" scope="row">Include on specific url</th>
                         <td>
-                        <label class="switch">
-                        <input type="checkbox" class="slider round" id="include_url" name="include_url" value="1"
-                        {(!is_null($display_opts) && !empty($display_opts->show_oncustom))?'checked':''}
-                        />
-                        <div class="slider round"></div>
-                        </label>
-                        <div id="included_urls_container" style="display:none;">
-                        {if (!is_null($display_opts) && !empty($display_opts->show_oncustom)) }
-                        {$whitelist = json_decode($display_opts->show_oncustom)}
-                        <textarea name="show_oncustom" id="show_oncustom" cols="30"
-                            rows="10">{foreach from=$whitelist item=page}{$page}{"\r\n"}{/foreach}</textarea>
-                        {else}
-                        <textarea class="show_specific" name="show_oncustom" id="show_oncustom" cols="30" rows="10"></textarea>
-                        {/if}
-                        <BR>
-                        Enter the url where you <b>WANT</b> the widget to display.<BR>
-                        Separate entries with comma (,).<BR>
-                        </div>
+                            <label class="switch">
+                                <input type="checkbox" class="slider round" id="include_url" name="include_url" value="1"
+                                {(!is_null($display_opts) && !empty($display_opts->show_oncustom))?'checked':''}
+                                />
+                                <div class="slider round"></div>
+                            </label>
+                            <div id="included_urls_container" style="display:none;">
+                                {if (!is_null($display_opts) && !empty($display_opts->show_oncustom)) }
+                                {$whitelist = json_decode($display_opts->show_oncustom)}
+                                <textarea name="show_oncustom" id="show_oncustom" cols="30"
+                                    rows="10">{foreach from=$whitelist item=page}{$page}{"\r\n"}{/foreach}</textarea>
+                                {else}
+                                <textarea class="show_specific" name="show_oncustom" id="show_oncustom" cols="30" rows="10"></textarea>
+                                {/if}
+                                <p>Enter the url where you <b>WANT</b> the widget to display.</p>
+                            </div>
                         </td>
                     </tr>
                 </table>

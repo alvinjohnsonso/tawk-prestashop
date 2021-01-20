@@ -28,9 +28,10 @@ class AdminTawktoController extends ModuleAdminController
     {
         $this->bootstrap = true;
         $this->display = 'view';
-        $this->meta_title = $this->l('tawk.to');
 
         parent::__construct();
+        $this->meta_title = $this->l('tawk.to');
+
         if (!$this->module->active) {
             Tools::redirectAdmin($this->context->link->getAdminLink('AdminHome'));
         }
